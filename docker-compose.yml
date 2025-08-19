@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   mongo:
     image: mongo
@@ -8,18 +6,19 @@ services:
     volumes:
       - ./data/db:/data/db
 
-  todo-backend:
-    build: ./backend
-    ports:
-      - "15000:15000"
+  backend:
+    image: crparichaya/todo-backend:latest
     environment:
       - MONGO_URL=mongodb://mongo:27017/todos
+      - PORT=15000
+    ports:
+      - "15000:15000"
     depends_on:
       - mongo
 
-  todo-frontend:
-    build: ./frontend
+  frontend:
+    image: crparichaya/todo-frontend:latest
     ports:
       - "3000:3000"
     depends_on:
-      - todo-backend
+      - backend
